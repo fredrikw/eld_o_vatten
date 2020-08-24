@@ -29,6 +29,14 @@ class MyVec:
         return (int(self.x), int(self.y))
 
 
+class Platform(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.surf = pygame.Surface((WIDTH, 15))
+        self.surf.fill((30, 255, 30))
+        self.rect = self.surf.get_rect(bottomleft=(0, HEIGHT))
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -59,8 +67,9 @@ class Player(pygame.sprite.Sprite):
 
 
 eldpojke = Player()
+mark = Platform()
 
-all_sprites = pygame.sprite.Group((eldpojke))
+all_sprites = pygame.sprite.Group((eldpojke, mark))
 
 while True:
     for event in pygame.event.get():
