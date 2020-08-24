@@ -10,6 +10,7 @@ SIZE = WIDTH, HEIGHT = 640, 480
 FPS = 60
 ACC = 0.5
 FRIC = -0.12
+GRAV = 0.5
 
 screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption('Eld och vatten')
@@ -48,7 +49,7 @@ class Player(pygame.sprite.Sprite):
         self.acc = MyVec(0, 0)
 
     def run(self):
-        self.acc = MyVec(0, 0)
+        self.acc = MyVec(0, GRAV)
 
         pressed_keys = pygame.key.get_pressed()
 
@@ -65,11 +66,18 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.midbottom = self.pos.int_tuple()
 
+    def update(self, platforms):
+        hits = pygame.sprite.spritecollide(self, platforms, False)
+        if hits:
+            self.pos.y = hits[0].rect.top + 1
+            self.vel.y = 0
+
 
 eldpojke = Player()
 mark = Platform()
 
 all_sprites = pygame.sprite.Group((eldpojke, mark))
+platforms = pygame.sprite.Group((mark,))
 
 while True:
     for event in pygame.event.get():
@@ -78,6 +86,7 @@ while True:
             sys.exit()
     screen.fill((0, 0, 0))
     eldpojke.run()
+    eldpojke.update(platforms)
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
     pygame.display.update()
