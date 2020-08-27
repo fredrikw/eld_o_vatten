@@ -70,7 +70,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.midbottom = self.pos.int_tuple()
 
     def jump(self):
-        self.vel.y = JUMPSPEED
+        if pygame.sprite.spritecollide(self, platforms, False):
+            self.vel.y = JUMPSPEED
 
     def update(self, platforms):
         hits = pygame.sprite.spritecollide(self, platforms, False)
